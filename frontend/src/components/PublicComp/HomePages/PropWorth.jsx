@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Search, MapPin, Calculator, Info, ArrowRight, TrendingUp } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import images from '../../../assets/images/images';
+import { motion } from 'framer-motion';
 
 const locations = [
     'Pune', 'Mumbai', 'Delhi', 'Bangalore', 'Hyderabad', 'Chennai',
@@ -21,30 +22,42 @@ const PropWorth = () => {
 
     return (
         <section className="w-full py-4 md:py-6 px-4 md:px-6 relative">
-            <div className="max-w-7xl mx-auto relative z-10">
+            <motion.div
+                initial={{ opacity: 0, scale: 0.98 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8 }}
+                className="max-w-7xl mx-auto relative z-10"
+            >
                 <div className="relative border border-[var(--color-primary-lightest)] rounded-2xl shadow-2xl flex flex-col lg:flex-row items-stretch min-h-[350px] md:min-h-[250px]">
 
                     {/* FULL CARD BACKGROUND IMAGE */}
-                    <div className="absolute inset-0 z-0 rounded-2xl overflow-hidden">
+                    <div className="absolute inset-0 z-0 rounded-2xl overflow-hidden bg-[var(--color-primary-dark-2)]">
                         <img
                             src={images.img2}
                             alt="Full Card BG"
-                            className="w-full h-full object-cover"
+                            className="w-full h-full object-cover mix-blend-overlay opacity-30 scale-105 transition-transform duration-[10s] hover:scale-100"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-primary-dark-2)]/95 via-[var(--color-primary-dark-1)]/90 to-[var(--color-primary-dark-2)]/80"></div>
+                        <div className="absolute inset-0 bg-gradient-to-br from-[var(--color-primary-dark-2)] via-[var(--color-primary-dark-2)]/90 to-transparent"></div>
                     </div>
 
                     {/* Left Side: Visual/Intro */}
-                    <div className="relative z-10 lg:w-1/3 p-4 md:p-6 flex flex-col justify-center text-white border-b lg:border-b-0 lg:border-r border-white/10">
+                    <motion.div
+                        initial={{ opacity: 0, x: -30 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6, delay: 0.3 }}
+                        className="relative z-10 lg:w-1/3 p-4 md:p-6 flex flex-col justify-center text-white border-b lg:border-b-0 lg:border-r border-white/10"
+                    >
                         <div className="relative z-10">
                             <div className="flex items-center gap-2 mb-2 bg-white/20 w-fit px-3 py-1 rounded-full backdrop-blur-md border border-white/30">
                                 <TrendingUp className="w-3 h-3" />
                                 <span className="text-[9px] font-bold uppercase tracking-widest">Premium Tool</span>
                             </div>
-                            <h2 className="text-2xl md:text-2xl lg:text-3xl font-black mb-3 tracking-tight leading-tight">
+                            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black mb-3 tracking-tight leading-tight">
                                 Prop<span className="text-[var(--color-primary-light-2)]">Worth</span>
                             </h2>
-                            <p className="text-xs md:text-sm text-blue-50 font-medium leading-relaxed mb-6 opacity-90">
+                            <p className="text-sm text-blue-50 font-medium leading-relaxed mb-8 opacity-90 max-w-sm">
                                 Check Estimated Transaction Price of any Property accurately with Pune Dream Home's intelligence.
                             </p>
 
@@ -63,10 +76,16 @@ const PropWorth = () => {
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </motion.div>
 
                     {/* Right Side: Search Form */}
-                    <div className="relative z-10 flex-1 p-6 md:p-8 lg:p-10 backdrop-blur-sm bg-white/5">
+                    <motion.div
+                        initial={{ opacity: 0, x: 30 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6, delay: 0.3 }}
+                        className="relative z-10 flex-1 p-6 sm:p-8 lg:p-12"
+                    >
                         <div className="max-w-2xl">
                             <div className="flex items-center gap-2 mb-2">
                                 <span className="w-6 h-[2px] bg-[var(--color-primary-light-2)]"></span>
@@ -144,9 +163,9 @@ const PropWorth = () => {
                                 </Link>
                             </div>
                         </div>
-                    </div>
+                    </motion.div>
                 </div>
-            </div>
+            </motion.div>
         </section>
     );
 };

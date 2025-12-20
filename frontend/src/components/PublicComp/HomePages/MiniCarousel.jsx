@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import images from '../../../assets/images/images'
+import { motion, AnimatePresence } from 'framer-motion'
 
 const MiniCarousel = () => {
-    // Create an array of images from the imported object, repeating the available image
-    const carouselImages = [images.img, images.img, images.img, images.img, images.img];
+    // Unique images for the carousel to make it look active and premium
+    const carouselImages = [images.img_17, images.img_18, images.img_3, images.img_4, images.img_7];
 
     const [currentIndex, setCurrentIndex] = useState(0)
 
@@ -21,23 +22,31 @@ const MiniCarousel = () => {
     }
 
     return (
-        <div className="hidden lg:block w-1/4 max-w-sm xl:max-w-md relative flex-shrink-0">
+        <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+            className="w-full md:w-[350px] lg:w-[450px] relative flex-shrink-0"
+        >
             {/* Carousel Container */}
-            <div className="relative w-full h-64 rounded-lg overflow-hidden shadow-lg">
+            <div className="relative w-full h-48 md:h-64 rounded-xl overflow-hidden shadow-lg border border-white/20">
                 {/* Images */}
-                {carouselImages.map((image, index) => (
-                    <div
-                        key={index}
-                        className={`absolute w-full h-full transition-opacity duration-500 ease-in-out ${index === currentIndex ? 'opacity-100' : 'opacity-0'
-                            }`}
+                <AnimatePresence mode="wait">
+                    <motion.div
+                        key={currentIndex}
+                        initial={{ opacity: 0, scale: 1.1 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.5 }}
+                        className="absolute w-full h-full"
                     >
                         <img
-                            src={image}
-                            alt={`Slide ${index + 1}`}
+                            src={carouselImages[currentIndex]}
+                            alt={`Slide ${currentIndex + 1}`}
                             className="w-full h-full object-cover"
                         />
-                    </div>
-                ))}
+                    </motion.div>
+                </AnimatePresence>
 
                 {/* Indicators - 4 indicators as requested */}
                 <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">
@@ -54,7 +63,7 @@ const MiniCarousel = () => {
                     ))}
                 </div>
             </div>
-        </div>
+        </motion.div>
     )
 }
 

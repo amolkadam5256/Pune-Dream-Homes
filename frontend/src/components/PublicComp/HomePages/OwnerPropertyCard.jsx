@@ -2,23 +2,24 @@ import React, { useRef } from 'react';
 import images from '../../../assets/images/images';
 import { ArrowRight, MapPin, Camera, Heart, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 const OwnerPropertyCard = () => {
     const scrollContainerRef = useRef(null);
 
     const properties = [
         { id: 1, title: "2 BHK Flat", price: "₹60 Lac", area: "950 sqft", location: "Handewadi Road, Pune", status: "Ready to Move", photosCount: 14, image: images.img },
-        { id: 2, title: "2 BHK Flat", price: "₹45 Lac", area: "787 sqft", location: "Pune", status: "Ready to Move", photosCount: 4, image: images.img },
-        { id: 3, title: "1 BHK Flat", price: "₹29.5 Lac", area: "550 sqft", location: "Narhe, Pune", status: "Ready to Move", photosCount: 31, image: images.img },
-        { id: 4, title: "2 BHK Flat", price: "₹75 Lac", area: "950 sqft", location: "Katraj, Pune", status: "Ready to Move", photosCount: 12, image: images.img },
-        { id: 5, title: "3 BHK Flat", price: "₹1.25 Cr", area: "1305 sqft", location: "Wadachi Wadi, Undri, Pune", status: "Ready to Move", photosCount: 56, image: images.img },
-        { id: 6, title: "2 BHK Flat", price: "₹79 Lac", area: "1100 sqft", location: "Manjri, Manjri Budruk, Pune", status: "Ready to Move", photosCount: 3, image: images.img },
-        { id: 7, title: "2 BHK Flat", price: "₹80 Lac", area: "950 sqft", location: "Katraj, Pune", status: "Ready to Move", photosCount: 18, image: images.img },
-        { id: 8, title: "3 BHK Flat", price: "₹1.20 Cr", area: "1407 sqft", location: "Yewalewadi, Pune", status: "Ready to Move", photosCount: 17, image: images.img },
-        { id: 9, title: "2 BHK Flat", price: "₹65 Lac", area: "1000 sqft", location: "Wagholi, Pune", status: "Ready to Move", photosCount: 9, image: images.img },
-        { id: 10, title: "1 BHK Flat", price: "₹35 Lac", area: "600 sqft", location: "Hadapsar, Pune", status: "Ready to Move", photosCount: 6, image: images.img },
-        { id: 11, title: "3 BHK Flat", price: "₹1.15 Cr", area: "1350 sqft", location: "Baner, Pune", status: "Ready to Move", photosCount: 22, image: images.img },
-        { id: 12, title: "2 BHK Flat", price: "₹55 Lac", area: "900 sqft", location: "Dhanori, Pune", status: "Ready to Move", photosCount: 8, image: images.img },
+        { id: 2, title: "2 BHK Flat", price: "₹45 Lac", area: "787 sqft", location: "Pune", status: "Ready to Move", photosCount: 4, image: images.img2 },
+        { id: 3, title: "1 BHK Flat", price: "₹29.5 Lac", area: "550 sqft", location: "Narhe, Pune", status: "Ready to Move", photosCount: 31, image: images.img_3 },
+        { id: 4, title: "2 BHK Flat", price: "₹75 Lac", area: "950 sqft", location: "Katraj, Pune", status: "Ready to Move", photosCount: 12, image: images.img_4 },
+        { id: 5, title: "3 BHK Flat", price: "₹1.25 Cr", area: "1305 sqft", location: "Wadachi Wadi, Undri, Pune", status: "Ready to Move", photosCount: 56, image: images.img_5 },
+        { id: 6, title: "2 BHK Flat", price: "₹79 Lac", area: "1100 sqft", location: "Manjri, Manjri Budruk, Pune", status: "Ready to Move", photosCount: 3, image: images.img_6 },
+        { id: 7, title: "2 BHK Flat", price: "₹80 Lac", area: "950 sqft", location: "Katraj, Pune", status: "Ready to Move", photosCount: 18, image: images.img_7 },
+        { id: 8, title: "3 BHK Flat", price: "₹1.20 Cr", area: "1407 sqft", location: "Yewalewadi, Pune", status: "Ready to Move", photosCount: 17, image: images.img_8 },
+        { id: 9, title: "2 BHK Flat", price: "₹65 Lac", area: "1000 sqft", location: "Wagholi, Pune", status: "Ready to Move", photosCount: 9, image: images.img_9 },
+        { id: 10, title: "1 BHK Flat", price: "₹35 Lac", area: "600 sqft", location: "Hadapsar, Pune", status: "Ready to Move", photosCount: 6, image: images.img_10 },
+        { id: 11, title: "3 BHK Flat", price: "₹1.15 Cr", area: "1350 sqft", location: "Baner, Pune", status: "Ready to Move", photosCount: 22, image: images.img_11 },
+        { id: 12, title: "2 BHK Flat", price: "₹55 Lac", area: "900 sqft", location: "Dhanori, Pune", status: "Ready to Move", photosCount: 8, image: images.img_12 },
     ];
 
     const scroll = (direction) => {
@@ -33,7 +34,13 @@ const OwnerPropertyCard = () => {
 
     return (
         <section className="w-full py-8 bg-white">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+                className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
+            >
                 {/* Header */}
                 <div className="flex justify-between items-end mb-6 border-b pb-3 border-[var(--color-primary-lightest)]">
                     <div>
@@ -65,16 +72,23 @@ const OwnerPropertyCard = () => {
                         className="flex overflow-x-auto gap-6 pb-6 snap-x snap-mandatory scrollbar-hide -mx-2 px-2"
                         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }} // For Firefox and IE/Edge
                     >
-                        {properties.map((property) => (
-                            <div key={property.id} className="min-w-[300px] md:min-w-[340px] snap-start">
-                                <div className="group bg-white rounded-xl overflow-hidden shadow-lg border border-[var(--color-primary-lightest)] hover:shadow-2xl hover:border-[var(--color-primary-light-1)] transition-all duration-300 relative h-full flex flex-col">
+                        {properties.map((property, index) => (
+                            <motion.div
+                                key={property.id}
+                                initial={{ opacity: 0, scale: 0.9 }}
+                                whileInView={{ opacity: 1, scale: 1 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.4, delay: index * 0.05 }}
+                                className="min-w-[300px] md:min-w-[340px] snap-start"
+                            >
+                                <div className="group/owner bg-white rounded-xl overflow-hidden shadow-lg border border-[var(--color-primary-lightest)] hover:shadow-2xl hover:border-[var(--color-primary-light-1)] transition-all duration-300 relative h-full flex flex-col">
 
                                     {/* Image Section */}
                                     <div className="relative h-56 flex-shrink-0 overflow-hidden">
                                         <img
                                             src={property.image}
                                             alt={property.title}
-                                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                            className="w-full h-full object-cover transition-transform duration-700 group-hover/owner:scale-110"
                                         />
                                         {/* Overlay Gradient */}
                                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-60"></div>
@@ -129,13 +143,13 @@ const OwnerPropertyCard = () => {
                                                 <span className="truncate">{property.location.split(',')[0]}</span>
                                             </div>
 
-                                            <button className="bg-[var(--color-primary)] text-white text-xs font-bold py-2 px-4 rounded-lg shadow hover:bg-[var(--color-primary-dark-1)] transition-colors flex-shrink-0">
+                                            <button className="bg-[var(--color-primary)] text-white text-xs font-bold py-2 px-4 rounded-lg shadow-lg hover:bg-[var(--color-primary-dark-1)] transition-all duration-500 flex-shrink-0 opacity-0 translate-y-4 group-hover/owner:opacity-100 group-hover/owner:translate-y-0">
                                                 View Details
                                             </button>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </motion.div>
                         ))}
                     </div>
 
@@ -148,7 +162,7 @@ const OwnerPropertyCard = () => {
                         <ChevronRight className="w-6 h-6" />
                     </button>
                 </div>
-            </div>
+            </motion.div>
         </section>
     );
 };

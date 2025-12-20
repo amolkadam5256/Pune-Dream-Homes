@@ -1,349 +1,264 @@
-import React, { useState } from 'react';
-import { Mail, Phone, Lock, User, ArrowLeft } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
+import React, { useState } from "react";
+import { Mail, Phone, Lock, User, ArrowLeft } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 const Register = () => {
-    const navigate = useNavigate();
-    const { register, verifyOTP } = useAuth();
-    const [otpMethod, setOtpMethod] = useState('email');
-    const [formData, setFormData] = useState({
-        name: '',
-        email: '',
-        phone: '',
-        password: '',
-        confirmPassword: '',
-        otp: ''
-    });
-    const [step, setStep] = useState(1);
-    const [loading, setLoading] = useState(false);
-    const [message, setMessage] = useState({ type: '', text: '' });
+  const navigate = useNavigate();
+  const { register } = useAuth();
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    password: "",
+    confirmPassword: "",
+  });
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState({ type: "", text: "" });
 
-    const handleInputChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-        setMessage({ type: '', text: '' });
-    };
+  const handleInputChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setMessage({ type: "", text: "" });
+  };
 
-    const handleSignup = async (e) => {
-        e.preventDefault();
+  const handleSignup = async (e) => {
+    e.preventDefault();
+    if (
+      !formData.name ||
+      !formData.email ||
+      !formData.phone ||
+      !formData.password ||
+      !formData.confirmPassword
+    ) {
+      setMessage({ type: "error", text: "Please fill in all fields" });
+      return;
+    }
 
-        if (step === 1) {
-            if (!formData.name || !formData.email || !formData.phone || !formData.password || !formData.confirmPassword) {
-                setMessage({ type: 'error', text: 'Please fill in all fields' });
-                return;
-            }
-            if (formData.password !== formData.confirmPassword) {
-                setMessage({ type: 'error', text: 'Passwords do not match' });
-                return;
-            }
-            if (formData.password.length < 6) {
-                setMessage({ type: 'error', text: 'Password must be at least 6 characters' });
-                return;
-            }
+    if (formData.password !== formData.confirmPassword) {
+      setMessage({ type: "error", text: "Passwords do not match" });
+      return;
+    }
 
-            setLoading(true);
-            try {
-                const response = await register({
-                    fullName: formData.name,
-                    email: formData.email,
-                    phoneNumber: formData.phone,
-                    password: formData.password,
-                    role: 'customer'
-                });
+    if (formData.password.length < 6) {
+      setMessage({
+        type: "error",
+        text: "Password must be at least 6 characters",
+      });
+      return;
+    }
 
-                setMessage({ type: 'info', text: response.message || 'OTP sent to your email.' });
-                setStep(2);
-            } catch (error) {
-                setMessage({
-                    type: 'error',
-                    text: error.response?.data?.message || 'Registration failed. Please try again.'
-                });
-            } finally {
-                setLoading(false);
-            }
-        } else if (step === 2) {
-            if (!formData.otp || formData.otp.length !== 6) {
-                setMessage({ type: 'error', text: 'Please enter valid 6-digit OTP' });
-                return;
-            }
+    setLoading(true);
+    try {
+      // Split the full name into firstName and lastName
+      const nameParts = formData.name.trim().split(" ");
+      const firstName = nameParts[0];
+      const lastName = nameParts.slice(1).join(" ") || null;
 
-            setLoading(true);
-            try {
-                const response = await verifyOTP(formData.email, formData.otp);
+      // Send data matching Prisma schema structure
+      const response = await register({
+        email: formData.email,
+        password: formData.password,
+        firstName: firstName,
+        lastName: lastName,
+        phone: formData.phone,
+      });
 
-                setMessage({ type: 'success', text: 'Account created and verified successfully!' });
-                setTimeout(() => {
-                    navigate('/customer/dashboard');
-                }, 1500);
-            } catch (error) {
-                setMessage({
-                    type: 'error',
-                    text: error.response?.data?.message || 'Verification failed. Please try again.'
-                });
-            } finally {
-                setLoading(false);
-            }
-        }
-    };
+      setMessage({
+        type: "success",
+        text:
+          response.message ||
+          "Registration successful! Redirecting to verify OTP...",
+      });
 
-    return (
-        <div className="min-h-screen flex items-center justify-center p-4"
-            style={{ background: 'linear-gradient(to bottom right, #D6E4F5, #4D82C6)' }}>
-            <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-8">
-                <button
-                    onClick={() => navigate('/auth/login')}
-                    className="flex items-center mb-6 transition text-sm"
-                    style={{ color: '#979DA6' }}
-                    onMouseEnter={(e) => e.target.style.color = '#0A0A0A'}
-                    onMouseLeave={(e) => e.target.style.color = '#979DA6'}
-                >
-                    <ArrowLeft size={16} className="mr-2" />
-                    Back to Login
-                </button>
+      setTimeout(() => {
+        navigate("/auth/verify-otp", { state: { email: formData.email } });
+      }, 2000);
+    } catch (error) {
+      setMessage({
+        type: "error",
+        text:
+          error.response?.data?.message ||
+          "Registration failed. Please try again.",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
-                <div className="text-center mb-8">
-                    <div className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4"
-                        style={{ backgroundColor: '#2262B2' }}>
-                        <User className="text-white" size={25} />
-                    </div>
-                    <h2 className="text-2xl font-bold" style={{ color: '#0A0A0A' }}>
-                        Create Account
-                    </h2>
-                    <p className="mt-2 text-sm" style={{ color: '#979DA6' }}>
-                        Step {step} of 2
-                    </p>
-                </div>
+  return (
+    <div className="flex items-center justify-center min-h-screen px-4 py-12 bg-gradient-to-br from-blue-50 to-indigo-100 sm:px-6 lg:px-8">
+      <div className="w-full max-w-md space-y-8 bg-white rounded-2xl shadow-xl w-full max-w-md p-8">
+        <button
+          onClick={() => navigate("/auth/login")}
+          className="flex items-center mb-6 transition text-sm text-gray-500 hover:text-black"
+        >
+          <ArrowLeft className="w-4 h-4 mr-2" />
+          Back to Login
+        </button>
 
-                {message.text && (
-                    <div className={`mb-4 p-3 rounded-lg ${message.type === 'success' ? 'bg-green-100 text-green-700' :
-                        message.type === 'error' ? 'bg-red-100 text-red-700' :
-                            'bg-blue-100 text-blue-700'
-                        }`}>
-                        {message.text}
-                    </div>
-                )}
-
-                <form onSubmit={handleSignup}>
-                    {step === 1 ? (
-                        <>
-                            <div className="mb-4">
-                                <label className="block mb-2 text-sm" style={{ color: '#0A0A0A' }}>
-                                    Full Name
-                                </label>
-                                <div className="relative">
-                                    <User className="absolute left-3 top-3"
-                                        style={{ color: '#979DA6' }}
-                                        size={20} />
-                                    <input
-                                        type="text"
-                                        name="name"
-                                        value={formData.name}
-                                        onChange={handleInputChange}
-                                        className="w-full pl-10 pr-4 py-3 border rounded-lg focus:outline-none focus:ring-2"
-                                        style={{ borderColor: '#E5E7EB' }}
-                                        onFocus={(e) => e.target.style.borderColor = '#2262B2'}
-                                        onBlur={(e) => e.target.style.borderColor = '#E5E7EB'}
-                                        placeholder="Enter your name"
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="mb-4">
-                                <label className="block mb-2 text-sm" style={{ color: '#0A0A0A' }}>
-                                    Email
-                                </label>
-                                <div className="relative">
-                                    <Mail className="absolute left-3 top-3"
-                                        style={{ color: '#979DA6' }}
-                                        size={20} />
-                                    <input
-                                        type="email"
-                                        name="email"
-                                        value={formData.email}
-                                        onChange={handleInputChange}
-                                        className="w-full pl-10 pr-4 py-3 border rounded-lg focus:outline-none focus:ring-2"
-                                        style={{ borderColor: '#E5E7EB' }}
-                                        onFocus={(e) => e.target.style.borderColor = '#2262B2'}
-                                        onBlur={(e) => e.target.style.borderColor = '#E5E7EB'}
-                                        placeholder="Enter your email"
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="mb-4">
-                                <label className="block mb-2 text-sm" style={{ color: '#0A0A0A' }}>
-                                    Phone Number
-                                </label>
-                                <div className="relative">
-                                    <Phone className="absolute left-3 top-3"
-                                        style={{ color: '#979DA6' }}
-                                        size={20} />
-                                    <input
-                                        type="tel"
-                                        name="phone"
-                                        value={formData.phone}
-                                        onChange={handleInputChange}
-                                        className="w-full pl-10 pr-4 py-3 border rounded-lg focus:outline-none focus:ring-2"
-                                        style={{ borderColor: '#E5E7EB' }}
-                                        onFocus={(e) => e.target.style.borderColor = '#2262B2'}
-                                        onBlur={(e) => e.target.style.borderColor = '#E5E7EB'}
-                                        placeholder="Enter your phone"
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="mb-4">
-                                <label className="block mb-2 text-sm" style={{ color: '#0A0A0A' }}>
-                                    Password
-                                </label>
-                                <div className="relative">
-                                    <Lock className="absolute left-3 top-3"
-                                        style={{ color: '#979DA6' }}
-                                        size={20} />
-                                    <input
-                                        type="password"
-                                        name="password"
-                                        value={formData.password}
-                                        onChange={handleInputChange}
-                                        className="w-full pl-10 pr-4 py-3 border rounded-lg focus:outline-none focus:ring-2"
-                                        style={{ borderColor: '#E5E7EB' }}
-                                        onFocus={(e) => e.target.style.borderColor = '#2262B2'}
-                                        onBlur={(e) => e.target.style.borderColor = '#E5E7EB'}
-                                        placeholder="Create password"
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="mb-4">
-                                <label className="block mb-2 text-sm" style={{ color: '#0A0A0A' }}>
-                                    Confirm Password
-                                </label>
-                                <div className="relative">
-                                    <Lock className="absolute left-3 top-3"
-                                        style={{ color: '#979DA6' }}
-                                        size={20} />
-                                    <input
-                                        type="password"
-                                        name="confirmPassword"
-                                        value={formData.confirmPassword}
-                                        onChange={handleInputChange}
-                                        className="w-full pl-10 pr-4 py-3 border rounded-lg focus:outline-none focus:ring-2"
-                                        style={{ borderColor: '#E5E7EB' }}
-                                        onFocus={(e) => e.target.style.borderColor = '#2262B2'}
-                                        onBlur={(e) => e.target.style.borderColor = '#E5E7EB'}
-                                        placeholder="Confirm password"
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="mb-6">
-                                <label className="block mb-2 text-sm" style={{ color: '#0A0A0A' }}>
-                                    Verify via
-                                </label>
-                                <div className="flex gap-4">
-                                    <button
-                                        type="button"
-                                        onClick={() => setOtpMethod('email')}
-                                        className="flex-1 py-2 px-4 rounded-lg border-2 transition"
-                                        style={otpMethod === 'email' ? {
-                                            borderColor: '#2262B2',
-                                            backgroundColor: '#D6E4F5',
-                                            color: '#153E72'
-                                        } : {
-                                            borderColor: '#E5E7EB',
-                                            color: '#979DA6'
-                                        }}
-                                    >
-                                        <Mail className="inline mr-2" size={18} />
-                                        Email
-                                    </button>
-                                    <button
-                                        type="button"
-                                        onClick={() => setOtpMethod('phone')}
-                                        className="flex-1 py-2 px-4 rounded-lg border-2 transition"
-                                        style={otpMethod === 'phone' ? {
-                                            borderColor: '#2262B2',
-                                            backgroundColor: '#D6E4F5',
-                                            color: '#153E72'
-                                        } : {
-                                            borderColor: '#E5E7EB',
-                                            color: '#979DA6'
-                                        }}
-                                    >
-                                        <Phone className="inline mr-2" size={18} />
-                                        Phone
-                                    </button>
-                                </div>
-                            </div>
-
-                            <button
-                                type="submit"
-                                disabled={loading}
-                                className="w-full text-white py-3 rounded-lg font-semibold transition disabled:opacity-50"
-                                style={{ backgroundColor: '#2262B2' }}
-                                onMouseEnter={(e) => !loading && (e.target.style.backgroundColor = '#1B4F91')}
-                                onMouseLeave={(e) => !loading && (e.target.style.backgroundColor = '#2262B2')}
-                            >
-                                {loading ? 'Sending OTP...' : 'Continue'}
-                            </button>
-                        </>
-                    ) : (
-                        <>
-                            <div className="text-center mb-6">
-                                <p style={{ color: '#979DA6' }}>
-                                    Enter the 6-digit code sent to your {otpMethod}
-                                </p>
-                                <p className="text-sm font-medium mt-2"
-                                    style={{ color: '#2262B2' }}>
-                                    {otpMethod === 'email' ? formData.email : formData.phone}
-                                </p>
-                            </div>
-
-                            <div className="mb-6">
-                                <label className="block mb-2 text-sm" style={{ color: '#0A0A0A' }}>
-                                    OTP Code
-                                </label>
-                                <input
-                                    type="text"
-                                    name="otp"
-                                    value={formData.otp}
-                                    onChange={handleInputChange}
-                                    maxLength="6"
-                                    className="w-full px-4 py-3 border rounded-lg text-center text-2xl tracking-widest focus:outline-none focus:ring-2"
-                                    style={{ borderColor: '#E5E7EB' }}
-                                    onFocus={(e) => e.target.style.borderColor = '#2262B2'}
-                                    onBlur={(e) => e.target.style.borderColor = '#E5E7EB'}
-                                    placeholder="000000"
-                                />
-                            </div>
-
-                            <button
-                                type="submit"
-                                disabled={loading}
-                                className="w-full text-white py-3 rounded-lg font-semibold transition disabled:opacity-50"
-                                style={{ backgroundColor: '#2262B2' }}
-                                onMouseEnter={(e) => !loading && (e.target.style.backgroundColor = '#1B4F91')}
-                                onMouseLeave={(e) => !loading && (e.target.style.backgroundColor = '#2262B2')}
-                            >
-                                {loading ? 'Verifying...' : 'Verify & Create Account'}
-                            </button>
-
-                            <button
-                                type="button"
-                                onClick={() => setStep(1)}
-                                className="w-full mt-3 font-medium transition"
-                                style={{ color: '#2262B2' }}
-                                onMouseEnter={(e) => e.target.style.color = '#1B4F91'}
-                                onMouseLeave={(e) => e.target.style.color = '#2262B2'}
-                            >
-                                Change {otpMethod}
-                            </button>
-                        </>
-                    )}
-                </form>
-            </div>
+        <div>
+          <h2 className="mt-6 text-3xl font-bold text-center text-gray-900">
+            Create Account
+          </h2>
+          <p className="mt-2 text-sm text-center text-gray-600">
+            Join Pune Dream Homes today
+          </p>
         </div>
-    );
+
+        {message.text && (
+          <div
+            className={`p-4 rounded-lg ${
+              message.type === "error"
+                ? "bg-red-50 text-red-700 border border-red-200"
+                : "bg-green-50 text-green-700 border border-green-200"
+            }`}
+          >
+            {message.text}
+          </div>
+        )}
+
+        <form className="mt-8 space-y-6" onSubmit={handleSignup}>
+          <div className="space-y-4 rounded-md shadow-sm">
+            <div>
+              <label
+                htmlFor="name"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
+                Full Name
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                  <User className="w-5 h-5 text-gray-400" />
+                </div>
+                <input
+                  id="name"
+                  name="name"
+                  type="text"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  className="appearance-none relative block w-full px-3 py-3 pl-10 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="John Doe"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
+                Email Address
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                  <Mail className="w-5 h-5 text-gray-400" />
+                </div>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  className="appearance-none relative block w-full px-3 py-3 pl-10 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="you@example.com"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label
+                htmlFor="phone"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
+                Phone Number
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                  <Phone className="w-5 h-5 text-gray-400" />
+                </div>
+                <input
+                  id="phone"
+                  name="phone"
+                  type="tel"
+                  value={formData.phone}
+                  onChange={handleInputChange}
+                  className="appearance-none relative block w-full px-3 py-3 pl-10 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="+91 1234567890"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
+                Password
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                  <Lock className="w-5 h-5 text-gray-400" />
+                </div>
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  value={formData.password}
+                  onChange={handleInputChange}
+                  className="appearance-none relative block w-full px-3 py-3 pl-10 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="••••••••"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label
+                htmlFor="confirmPassword"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
+                Confirm Password
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                  <Lock className="w-5 h-5 text-gray-400" />
+                </div>
+                <input
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  type="password"
+                  value={formData.confirmPassword}
+                  onChange={handleInputChange}
+                  className="appearance-none relative block w-full px-3 py-3 pl-10 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="••••••••"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <button
+              type="submit"
+              disabled={loading}
+              className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:bg-blue-300 disabled:cursor-not-allowed transition-colors"
+            >
+              {loading ? "Creating Account..." : "Sign Up"}
+            </button>
+          </div>
+
+          <div className="text-sm text-center">
+            Already have an account?{" "}
+            <button
+              type="button"
+              onClick={() => navigate("/auth/login")}
+              className="font-bold text-blue-600 hover:text-blue-800"
+            >
+              Sign In
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
 };
 
 export default Register;

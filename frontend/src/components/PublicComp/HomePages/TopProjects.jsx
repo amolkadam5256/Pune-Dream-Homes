@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import images from '../../../assets/images/images';
 import { ArrowRight, MapPin, Building2, ChevronLeft, ChevronRight, Home, BadgeCheck } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 const TopProjects = () => {
     const scrollContainerRef = useRef(null);
@@ -15,7 +16,7 @@ const TopProjects = () => {
             config: "2, 3, 4 BHK Flats",
             price: "₹ 2.17 Cr onwards",
             marketedBy: "Amanora Park Town",
-            image: images.img,
+            image: images.img_13,
             isRera: true
         },
         {
@@ -26,7 +27,7 @@ const TopProjects = () => {
             config: "3 BHK Flats",
             price: "₹ 1.30 Cr onwards",
             marketedBy: "Hind Realty",
-            image: images.img,
+            image: images.img_14,
             isRera: true
         },
         {
@@ -37,7 +38,7 @@ const TopProjects = () => {
             config: "2, 3, 4 BHK Flats",
             price: "₹ 2.34 Cr onwards",
             marketedBy: "Hind Realty",
-            image: images.img,
+            image: images.img_15,
             isRera: true
         },
         {
@@ -48,7 +49,7 @@ const TopProjects = () => {
             config: "1, 2, 3 BHK Flats",
             price: "₹ 45 L onwards",
             marketedBy: "Pride Group",
-            image: images.img,
+            image: images.img_16,
             isRera: true
         }
     ];
@@ -65,7 +66,13 @@ const TopProjects = () => {
 
     return (
         <section className="w-full py-10 bg-white">
-            <div className="max-w-7xl mx-auto px-4 sm:px-4 lg:px-4">
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+                className="max-w-7xl mx-auto px-4 sm:px-4 lg:px-4"
+            >
                 {/* Header */}
                 <div className="flex justify-between items-end mb-8 border-b pb-4 border-[var(--color-primary-lightest)]">
                     <div>
@@ -97,8 +104,15 @@ const TopProjects = () => {
                         className="flex overflow-x-auto gap-6 pb-6 snap-x snap-mandatory scrollbar-hide -mx-2 px-2"
                         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
                     >
-                        {projects.map((project) => (
-                            <div key={project.id} className="min-w-[300px] md:min-w-[340px] snap-start">
+                        {projects.map((project, index) => (
+                            <motion.div
+                                key={project.id}
+                                initial={{ opacity: 0, scale: 0.9 }}
+                                whileInView={{ opacity: 1, scale: 1 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.4, delay: index * 0.1 }}
+                                className="min-w-[300px] md:min-w-[340px] snap-start"
+                            >
                                 <div className="group/card bg-white rounded-2xl overflow-hidden shadow-lg border border-[var(--color-primary-lightest)] hover:shadow-2xl hover:border-[var(--color-primary-light-1)] transition-all duration-500 flex flex-col h-full">
 
                                     {/* Image Section */}
@@ -168,7 +182,7 @@ const TopProjects = () => {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </motion.div>
                         ))}
                     </div>
 
@@ -181,7 +195,7 @@ const TopProjects = () => {
                         <ChevronRight className="w-6 h-6" />
                     </button>
                 </div>
-            </div>
+            </motion.div>
         </section>
     );
 };
