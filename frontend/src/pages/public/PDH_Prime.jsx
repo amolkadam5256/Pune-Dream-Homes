@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { 
-  Check, 
-  HelpCircle, 
-  Phone, 
-  MessageSquare, 
-  Star, 
-  ShieldCheck, 
-  Users, 
-  Unlock, 
+import {
+  Check,
+  HelpCircle,
+  Phone,
+  MessageSquare,
+  Star,
+  ShieldCheck,
+  Users,
+  Unlock,
   Zap,
   ArrowRight
 } from 'lucide-react';
@@ -88,17 +88,17 @@ const PDH_Prime = () => {
       {/* Hero Section */}
       <section className="bg-(--color-primary) text-white py-12 px-4">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             className="flex-1"
           >
             <div className="flex items-center gap-2 mb-4">
-              <span className="bg-yellow-400 text-black px-2 py-0.5 rounded-sm font-bold text-xs">MB PRIME</span>
-              <h1 className="text-3xl xl:text-4xl font-black">Pune <span className="text-yellow-400">Dream</span> Homes Prime</h1>
+              <span className="bg-yellow-400 text-black px-2 py-0.5 mt-2 font-bold text-xs">MB PRIME</span>
+              <h1 className="text-2xl xl:text-4xl font-black">Pune <span className="text-yellow-400">Dream</span> Homes Prime</h1>
             </div>
-            <p className="text-xl mb-6 font-medium text-blue-50">Pay Zero Commission & Call Owners Directly</p>
-            
+            <p className="text-lg sm:text-xl mb-6 font-medium text-blue-50">Pay Zero Commission & Call Owners Directly</p>
+
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="flex items-center gap-3 bg-white/10 p-3 rounded-md border border-white/20">
                 <ShieldCheck className="text-yellow-400" size={24} />
@@ -117,7 +117,7 @@ const PDH_Prime = () => {
             </div>
           </motion.div>
 
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             className="bg-white text-(--color-dark) p-6 rounded-md shadow-2xl w-full max-w-sm"
@@ -145,7 +145,7 @@ const PDH_Prime = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {plans.map((plan) => (
-              <motion.div 
+              <motion.div
                 key={plan.name}
                 whileHover={{ y: -5 }}
                 className={`relative bg-white rounded-md shadow-lg overflow-hidden border-2 ${plan.popular ? 'border-yellow-400' : 'border-transparent'}`}
@@ -155,7 +155,7 @@ const PDH_Prime = () => {
                     Recommended
                   </div>
                 )}
-                
+
                 <div className="p-6 border-b border-gray-100 text-center">
                   <h3 className="text-xl font-black mb-4 uppercase tracking-wider">{plan.name}</h3>
                   <div className="flex flex-col items-center justify-center">
@@ -190,13 +190,12 @@ const PDH_Prime = () => {
                 </div>
 
                 <div className="p-6 pt-0">
-                  <Link 
+                  <Link
                     to={user ? (user.role === 'admin' ? '/admin/dashboard' : '/customer/dashboard') : '/auth/login'}
-                    className={`w-full py-3 rounded-md font-black transition-all flex items-center justify-center ${
-                      plan.isCurrent 
-                      ? 'border border-(--color-primary) text-(--color-primary) hover:bg-slate-50' 
-                      : 'bg-(--color-primary) text-white hover:bg-(--color-primary-dark-1) shadow-md active:scale-95'
-                    }`}
+                    className={`w-full py-3 rounded-md font-black transition-all flex items-center justify-center ${plan.isCurrent
+                        ? 'border border-(--color-primary) text-(--color-primary) hover:bg-slate-50'
+                        : 'bg-(--color-primary) text-white hover:bg-(--color-primary-dark-1) shadow-md active:scale-95'
+                      }`}
                   >
                     {plan.buttonText}
                   </Link>
@@ -217,7 +216,7 @@ const PDH_Prime = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 relative">
             <div className="hidden md:block absolute top-1/2 left-1/4 right-1/4 h-0.5 border-t-2 border-dashed border-gray-200 -translate-y-1/2 z-0"></div>
-            
+
             {[
               { id: 1, title: 'Become a Prime member', desc: 'Step up to Pune Dream Homes Prime & explore Owner Posted Properties', icon: <Star size={32} /> },
               { id: 2, title: 'Access Prime Properties', desc: 'Unlock properties that are exclusively reserved for our Prime members', icon: <Unlock size={32} /> },
@@ -273,14 +272,14 @@ const PDH_Prime = () => {
                 <p className="font-medium text-xs">I agree to receive updates from Pune Dream Homes via WhatsApp</p>
                 <input type="checkbox" defaultChecked className="w-5 h-5 accent-green-600 cursor-pointer" />
               </div>
-              <Link 
+              <Link
                 to={user ? (user.role === 'admin' ? '/admin/dashboard' : '/customer/dashboard') : '/auth/register'}
                 className="w-full md:w-auto px-12 py-4 bg-(--color-primary) text-white font-black rounded-md shadow-xl hover:scale-105 transition-transform flex items-center justify-center"
               >
                 Get Started
               </Link>
             </div>
-            
+
             <div className="w-full md:w-64 bg-white p-6 rounded-md border border-blue-200 shadow-sm">
               <p className="text-xs font-bold text-gray-500 mb-4 text-center">Were you assisted by a Tele-executive?</p>
               <div className="flex gap-2">
@@ -292,17 +291,17 @@ const PDH_Prime = () => {
         </div>
 
         <div className="mt-12 text-center">
-            <p className="text-gray-500 font-medium mb-4">Have any queries? We're here to assist you!</p>
-            <div className="flex flex-wrap justify-center gap-6">
-                <div className="flex items-center gap-2">
-                    <Phone className="text-(--color-primary)" size={18} />
-                    <span className="font-bold">+91-7303439363</span>
-                </div>
-                <div className="flex items-center gap-2">
-                    <MessageSquare className="text-(--color-primary)" size={18} />
-                    <button className="text-(--color-primary) font-bold hover:underline">Request a Callback</button>
-                </div>
+          <p className="text-gray-500 font-medium mb-4">Have any queries? We're here to assist you!</p>
+          <div className="flex flex-wrap justify-center gap-6">
+            <div className="flex items-center gap-2">
+              <Phone className="text-(--color-primary)" size={18} />
+              <span className="font-bold">+91-7303439363</span>
             </div>
+            <div className="flex items-center gap-2">
+              <MessageSquare className="text-(--color-primary)" size={18} />
+              <button className="text-(--color-primary) font-bold hover:underline">Request a Callback</button>
+            </div>
+          </div>
         </div>
       </section>
 

@@ -9,6 +9,7 @@ import AgentCard from "../../components/PublicComp/HomePages/AgentCard";
 import NewLaunch from "../../components/PublicComp/HomePages/NewLaunch";
 import SiteVisitBanner from "../../components/PublicComp/HomePages/SiteVisitBanner";
 import PropWorth from "../../components/PublicComp/HomePages/PropWorth";
+import InteriorDesigners from "../../components/PublicComp/HomePages/InteriorDesigners";
 
 const Home = () => {
     return (
@@ -24,6 +25,7 @@ const Home = () => {
                 <SiteVisitBanner />
                 <PropWorth />
                 <TopProjects />
+                <InteriorDesigners />
 
 
             </div>

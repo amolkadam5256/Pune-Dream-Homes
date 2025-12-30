@@ -1,9 +1,11 @@
 // majesticrealties/src/assets/images/images.js
 
-// Logos
+// Logos and general images
 import logo from './logo.png';
 import img from './img.jpeg';
 import img2 from './img2.jpg';
+
+// Property images - individual imports
 import img_3 from './img_3.jpg';
 import img_4 from './img_4.jpg';
 import img_5 from './img_5.jpg';
@@ -20,27 +22,31 @@ import img_15 from './img_15.jpg';
 import img_16 from './img_16.jpg';
 import img_17 from './img_17.jpg';
 import img_18 from './img_18.jpg';
+
 // Export all as a single object
+// Each property image is wrapped in an array for consistent handling
 const images = {
     logo,
     img,
     img2,
-    img_3,
-    img_4,
-    img_5,
-    img_6,
-    img_7,
-    img_8,
-    img_9,
-    img_10,
-    img_11,
-    img_12,
-    img_13,
-    img_14,
-    img_15,
-    img_16,
-    img_17,
-    img_18,
+    // Property images as arrays (for carousel/gallery support)
+    img_3: [img_3],  // Wrap in array
+    img_4: [img_4],
+    img_5: [img_5],
+    img_6: [img_6],
+    img_7: [img_7],
+    img_8: [img_8],
+    img_9: [img_9],
+    img_10: [img_10],
+    img_11: [img_11],
+    img_12: [img_12],
+    img_13: [img_13],
+    img_14: [img_14],
+    img_15: [img_15],
+    img_16: [img_16],
+    img_17: [img_17],
+    img_18: [img_18],
 };
 
 export default images;
+
