@@ -179,17 +179,21 @@ const PropertyCard = ({ property, onViewDetails }) => {
       <div className="p-5">
         {/* Title & Location */}
         <h3
-          className="text-xl font-bold text-gray-900 mb-2 transition-colors line-clamp-1"
+          className="text-xl font-bold text-gray-900 mb-1 transition-colors line-clamp-1"
           style={{
             color: "inherit",
           }}
           onMouseEnter={(e) => (e.target.style.color = "var(--color-primary)")}
           onMouseLeave={(e) => (e.target.style.color = "inherit")}
         >
-          {property.bhk} BHK in {property.title}
+          {property.bhk > 0 ? `${property.bhk} BHK | ` : ""}
+          {property.title}
         </h3>
+        <div className="flex items-center text-gray-500 text-xs font-semibold uppercase tracking-wider mb-2">
+          {property.propertyType}
+        </div>
         <div className="flex items-center text-gray-600 text-sm mb-4">
-          <MapPin className="w-4 h-4 mr-1 flex-shrink-0" />
+          <MapPin className="w-4 h-4 mr-1 shrink-0" />
           <span className="truncate">
             {property.location}, {property.area}
           </span>
@@ -197,22 +201,26 @@ const PropertyCard = ({ property, onViewDetails }) => {
 
         {/* Property Details Grid */}
         <div className="grid grid-cols-3 gap-3 mb-4 pb-4 border-b border-gray-100">
-          <div className="flex items-center gap-2">
-            <Bed
-              className="w-4 h-4"
-              style={{ color: "var(--color-primary)" }}
-            />
-            <span className="text-sm font-medium">{property.bhk} BHK</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <Bath
-              className="w-4 h-4"
-              style={{ color: "var(--color-primary)" }}
-            />
-            <span className="text-sm font-medium">
-              {property.bathrooms} Bath
-            </span>
-          </div>
+          {property.bhk > 0 && (
+            <div className="flex items-center gap-2">
+              <Bed
+                className="w-4 h-4"
+                style={{ color: "var(--color-primary)" }}
+              />
+              <span className="text-sm font-medium">{property.bhk} BHK</span>
+            </div>
+          )}
+          {property.bathrooms > 0 && (
+            <div className="flex items-center gap-2">
+              <Bath
+                className="w-4 h-4"
+                style={{ color: "var(--color-primary)" }}
+              />
+              <span className="text-sm font-medium">
+                {property.bathrooms} Bath
+              </span>
+            </div>
+          )}
           <div className="flex items-center gap-2">
             <Maximize2
               className="w-4 h-4"
@@ -226,21 +234,27 @@ const PropertyCard = ({ property, onViewDetails }) => {
 
         {/* Additional Info Tags */}
         <div className="flex flex-wrap gap-2 mb-4">
-          <span
-            className="px-3 py-1 rounded-full text-xs font-medium"
-            style={{
-              backgroundColor: "var(--color-primary-lightest)",
-              color: "var(--color-primary)",
-            }}
-          >
-            {property.furnishing}
-          </span>
-          <span className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-xs font-medium">
-            Floor: {property.floor}
-          </span>
-          <span className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-xs font-medium">
-            {property.facing} Facing
-          </span>
+          {property.furnishing && (
+            <span
+              className="px-3 py-1 rounded-full text-xs font-medium"
+              style={{
+                backgroundColor: "var(--color-primary-lightest)",
+                color: "var(--color-primary)",
+              }}
+            >
+              {property.furnishing}
+            </span>
+          )}
+          {property.floor && property.floor !== "G" && (
+            <span className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-xs font-medium">
+              Floor: {property.floor}
+            </span>
+          )}
+          {property.facing && (
+            <span className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-xs font-medium">
+              {property.facing} Facing
+            </span>
+          )}
         </div>
 
         {/* Price Section */}
