@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const { User } = require("../modules");
+const prisma = require("../config/prisma");
 
 exports.protect = async (req, res, next) => {
   try {
@@ -21,12 +21,31 @@ exports.protect = async (req, res, next) => {
 
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      req.user = await User.findByPk(decoded.id);
+
+      // Use Prisma to find user
+      req.user = await prisma.user.findUnique({
+        where: { id: decoded.id },
+        select: {
+          id: true,
+          email: true,
+          role: true,
+          firstName: true,
+          lastName: true,
+          isActive: true,
+        },
+      });
 
       if (!req.user) {
         return res.status(401).json({
           success: false,
           message: "User not found",
+        });
+      }
+
+      if (!req.user.isActive) {
+        return res.status(401).json({
+          success: false,
+          message: "Your account has been deactivated",
         });
       }
 

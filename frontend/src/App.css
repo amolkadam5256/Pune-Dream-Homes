@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 
-:root {
+@theme {
     /* Primary Blue Scale */
     --color-primary: #2262B2;
     /* Base */

@@ -1,0 +1,15 @@
+import React from "react";
+
+const Analytics = () => {
+  return (
+    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+      <h2 className="text-2xl font-bold text-gray-900 mb-4">Analytics</h2>
+      <p className="text-gray-600">View detailed performance analytics.</p>
+      <div className="mt-8 h-64 bg-gray-50 rounded-xl border-dashed border-2 border-gray-200 flex items-center justify-center text-gray-400">
+        Analytics Charts Coming Soon
+      </div>
+    </div>
+  );
+};
+
+export default Analytics;

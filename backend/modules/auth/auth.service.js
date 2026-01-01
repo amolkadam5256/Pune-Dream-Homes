@@ -22,6 +22,12 @@ class AuthService {
       // Hash password
       const hashedPassword = await bcrypt.hash(password, 10);
 
+      // Validate role - Don't allow public registration of ADMINs
+      let finalRole = role || "CUSTOMER";
+      if (finalRole === "ADMIN") {
+        finalRole = "CUSTOMER";
+      }
+
       // Create user
       const user = await prisma.user.create({
         data: {
@@ -30,7 +36,7 @@ class AuthService {
           firstName: firstName || null,
           lastName: lastName || null,
           phone: phone || null,
-          role: role || "CUSTOMER",
+          role: finalRole,
           isVerified: true, // Set to false if you want email verification
           isActive: true,
         },

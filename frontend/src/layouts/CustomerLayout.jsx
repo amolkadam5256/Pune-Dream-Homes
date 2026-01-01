@@ -3,22 +3,19 @@ import Header from "../components/layout/public/Header";
 import Footer from "../components/layout/public/Footer";
 
 const CustomerLayout = () => {
-    return (
-        <div className="min-h-screen flex flex-col ">
+  return (
+    <div className="min-h-screen flex flex-col ">
+      {/* Top Navigation */}
+      <Header />
+      {/* Page Content */}
+      <main className="flex-1">
+        <Outlet />
+      </main>
 
-            {/* Top Navigation */}
-            <Header />
-            {/* Page Content */}
-            <main className="flex-1">
-                <Outlet />
-            </main>
-
-            {/* Footer (optional) */}
-            <Footer />
-
-        </div>
-    );
+      {/* Footer (optional) */}
+      <Footer />
+    </div>
+  );
 };
 
-
-export default CustomerLayout
+export default CustomerLayout;

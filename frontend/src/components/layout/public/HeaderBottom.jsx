@@ -84,11 +84,9 @@ const HeaderBottom = () => {
         link: "mailto:support@magicbricks.com",
       },
     ],
-    "For Agent & Builder": [
-      { label: "My Dashboard", link: "/agent/dashboard" },
-      { label: "Developer Lounge", link: "/agent/developer-lounge" },
-      { label: "Sales Enquiry", link: "/agent/sales-enquiry" },
-      { label: "Ad Packages", link: "/agent/ad-packages" },
+    "For Builder": [
+      { label: "My Dashboard", link: "/builder/dashboard" },
+      { label: "Sales Enquiry", link: "/help/sales-enquiry" },
     ],
     "Selling Tools": [
       { label: "Property Valuation", link: "/sell/valuation" },

@@ -12,6 +12,7 @@ const Register = () => {
     phone: "",
     password: "",
     confirmPassword: "",
+    role: "CUSTOMER", // Default role
   });
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ type: "", text: "" });
@@ -61,6 +62,7 @@ const Register = () => {
         firstName: firstName,
         lastName: lastName,
         phone: formData.phone,
+        role: formData.role,
       });
 
       setMessage({
@@ -86,8 +88,8 @@ const Register = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen px-4 py-12 bg-gradient-to-br from-blue-50 to-indigo-100 sm:px-6 lg:px-8">
-      <div className="w-full max-w-md space-y-8 bg-white rounded-2xl shadow-xl w-full max-w-md p-8">
+    <div className="flex items-center justify-center min-h-screen px-4 py-12 bg-linear-to-br from-blue-50 to-indigo-100 sm:px-6 lg:px-8">
+      <div className="w-full max-w-md space-y-8 bg-white rounded-2xl shadow-xl p-8">
         <button
           onClick={() => navigate("/auth/login")}
           className="flex items-center mb-6 transition text-sm text-gray-500 hover:text-black"
@@ -185,6 +187,30 @@ const Register = () => {
                   className="appearance-none relative block w-full px-3 py-3 pl-10 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   placeholder="+91 1234567890"
                 />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                I am a:
+              </label>
+              <div className="grid grid-cols-2 gap-3">
+                {["CUSTOMER", "BUILDER"].map((role) => (
+                  <button
+                    key={role}
+                    type="button"
+                    onClick={() => setFormData({ ...formData, role })}
+                    className={`py-2 px-3 text-sm font-medium rounded-lg border transition-all ${
+                      formData.role === role
+                        ? "bg-blue-600 text-white border-blue-600 shadow-md"
+                        : "bg-white text-gray-700 border-gray-300 hover:border-blue-400"
+                    }`}
+                  >
+                    {role === "CUSTOMER"
+                      ? "User"
+                      : role.charAt(0) + role.slice(1).toLowerCase()}
+                  </button>
+                ))}
               </div>
             </div>
 

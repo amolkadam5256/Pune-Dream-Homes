@@ -42,8 +42,8 @@ const Login = () => {
           case "CUSTOMER":
             navigate("/customer/customer-dashboard");
             break;
-          case "AGENT":
-            navigate("/agent/agent-dashboard");
+          case "BUILDER":
+            navigate("/builder/dashboard");
             break;
           default:
             // Default to customer dashboard if role is undefined or unknown

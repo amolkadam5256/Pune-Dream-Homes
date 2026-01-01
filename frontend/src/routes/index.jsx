@@ -4,6 +4,7 @@ import PublicRoutes from "./PublicRoutes.jsx";
 import AuthRoutes from "./authRoutes";
 import CustomerRoutes from "./CustomerRoutes";
 import AdminRoutes from "./AdminRoutes";
+import BuilderRoutes from "./BuilderRoutes";
 import NotFound from "../pages/NotFound";
 
 function AppRoutes() {
@@ -21,9 +22,11 @@ function AppRoutes() {
       {/* Admin Routes */}
       {AdminRoutes()}
 
+      {/* Builder Routes */}
+      {BuilderRoutes()}
+
       {/* 404 */}
       <Route path="*" element={<NotFound />} />
-      
     </Routes>
   );
 }

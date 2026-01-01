@@ -36,13 +36,11 @@ app.use((req, res, next) => {
 app.get("/", (req, res) => {
   res.status(200).json({
     success: true,
-    message: "Real Estate API Server",
+    message: "User Auth API Server",
     version: "1.0.0",
     endpoints: {
       health: "/health",
       auth: "/api/auth",
-      properties: "/api/properties",
-      projects: "/api/projects",
     },
   });
 });
@@ -86,25 +84,9 @@ app.get("/test", (req, res) => {
 const authRoutes = require("./modules/auth/auth.routes");
 app.use("/api/auth", authRoutes);
 
-// Project routes
-const projectRoutes = require("./routes/projectRoutes");
-app.use("/api/projects", projectRoutes);
-
-// Property routes (uncomment when ready)
-// const propertyRoutes = require("./modules/properties/propertyRoutes");
-// app.use("/api/properties", propertyRoutes);
-
-// City routes (uncomment when ready)
-// const cityRoutes = require("./routes/cityRoutes");
-// app.use("/api/cities", cityRoutes);
-
-// Locality routes (uncomment when ready)
-// const localityRoutes = require("./routes/localityRoutes");
-// app.use("/api/localities", localityRoutes);
-
-// Amenity routes (uncomment when ready)
-// const amenityRoutes = require("./routes/amenityRoutes");
-// app.use("/api/amenities", amenityRoutes);
+// Admin management routes
+const adminRoutes = require("./modules/admin/admin.routes");
+app.use("/api/admin", adminRoutes);
 
 /* =======================
    404 Handler
@@ -120,16 +102,10 @@ app.use((req, res) => {
       "GET /test",
       "POST /api/auth/register",
       "POST /api/auth/login",
-      "GET /api/projects",
-      "GET /api/projects/featured",
-      "GET /api/projects/:identifier",
-      "GET /api/projects/city/:cityId",
-      "GET /api/projects/locality/:localityId",
-      "GET /api/projects/builder/:builderName",
-      "GET /api/projects/search",
-      "POST /api/projects",
-      "PUT /api/projects/:id",
-      "DELETE /api/projects/:id",
+      "GET /api/admin/users (Protected)",
+      "POST /api/admin/users (Protected)",
+      "PUT /api/admin/users/:id (Protected)",
+      "DELETE /api/admin/users/:id (Protected)",
     ],
   });
 });
@@ -183,47 +159,14 @@ const startServer = async () => {
       console.log("\n   ┌─ Authentication");
       console.log("   ├─ POST http://localhost:" + PORT + "/api/auth/register");
       console.log("   └─ POST http://localhost:" + PORT + "/api/auth/login");
-      console.log("\n   ┌─ Projects (Public)");
-      console.log("   ├─ GET  http://localhost:" + PORT + "/api/projects");
+      console.log("\n   ┌─ Admin Management (Protected)");
+      console.log("   ├─ GET    http://localhost:" + PORT + "/api/admin/users");
+      console.log("   ├─ POST   http://localhost:" + PORT + "/api/admin/users");
       console.log(
-        "   ├─ GET  http://localhost:" + PORT + "/api/projects/featured"
+        "   ├─ PUT    http://localhost:" + PORT + "/api/admin/users/:id"
       );
       console.log(
-        "   ├─ GET  http://localhost:" + PORT + "/api/projects/search?query=..."
-      );
-      console.log(
-        "   ├─ GET  http://localhost:" + PORT + "/api/projects/city/:cityId"
-      );
-      console.log(
-        "   ├─ GET  http://localhost:" +
-          PORT +
-          "/api/projects/locality/:localityId"
-      );
-      console.log(
-        "   ├─ GET  http://localhost:" +
-          PORT +
-          "/api/projects/builder/:builderName"
-      );
-      console.log(
-        "   ├─ GET  http://localhost:" + PORT + "/api/projects/:identifier"
-      );
-      console.log(
-        "   └─ PATCH http://localhost:" + PORT + "/api/projects/:id/stats"
-      );
-      console.log("\n   ┌─ Projects (Protected)");
-      console.log("   ├─ POST http://localhost:" + PORT + "/api/projects");
-      console.log("   ├─ PUT  http://localhost:" + PORT + "/api/projects/:id");
-      console.log(
-        "   ├─ DELETE http://localhost:" + PORT + "/api/projects/:id"
-      );
-      console.log(
-        "   ├─ POST http://localhost:" + PORT + "/api/projects/:id/images"
-      );
-      console.log(
-        "   ├─ POST http://localhost:" + PORT + "/api/projects/:id/amenities"
-      );
-      console.log(
-        "   └─ POST http://localhost:" + PORT + "/api/projects/:id/floor-plans"
+        "   └─ DELETE http://localhost:" + PORT + "/api/admin/users/:id"
       );
       console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
     });

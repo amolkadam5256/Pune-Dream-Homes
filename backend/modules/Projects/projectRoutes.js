@@ -23,7 +23,7 @@ const {
   addProjectAmenities,
   addFloorPlans,
   updateProjectStats,
-} = require("../controllers/projectController");
+} = require("./projectcontroller");
 
 // ==================== PUBLIC ROUTES ====================
 // Note: Order matters! Specific routes must come BEFORE dynamic routes

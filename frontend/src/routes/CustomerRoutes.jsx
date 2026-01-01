@@ -8,7 +8,7 @@ function CustomerRoutes() {
     <Route
       path="/customer"
       element={
-        <ProtectedRoute roles={["customer", "agent"]}>
+        <ProtectedRoute roles={["CUSTOMER"]}>
           <CustomerLayout />
         </ProtectedRoute>
       }
